@@ -1,10 +1,14 @@
 package main
 
 import (
+	"fmt"
+	"path/filepath"
     "context"
     "io/ioutil"
     "log"
     "math"
+    "os"
+    "strings"
 
     "github.com/chromedp/cdproto/emulation"
     "github.com/chromedp/cdproto/page"
@@ -15,17 +19,43 @@ func main() {
     // create context
     ctx, cancel := chromedp.NewContext(context.Background())
     defer cancel()
-    //if you want to use html from your local filesystem use file:/// + absolute path to your html file
-    url :=  "https://www.google.com"
-    // capture screenshot of an element
-    var buf []byte
-    // capture entire browser viewport, returning png with quality=90
-    if err := chromedp.Run(ctx, fullScreenshot(url, 90, &buf)); err != nil {
-        log.Fatal(err)
-    }
-    if err := ioutil.WriteFile("screenshot.png", buf, 0644); err != nil {
-        log.Fatal(err)
-    }
+    // used to get absolute path of a file
+   	abs,err := filepath.Abs("./demos/")
+   	if err != nil {
+   	   log.Fatal(err)
+   	}
+
+   	//name of files inside html's folder
+   	files, err := ioutil.ReadDir("./demos/")
+	if err != nil {
+	    log.Fatal(err)
+	}
+
+	//creates a folder named ScreenShots if the folder does not exist
+	if _, err := os.Stat("./ScreenShots"); os.IsNotExist(err) {
+    	errdir := os.Mkdir("ScreenShots", 0755)
+    	if errdir != nil {
+    		log.Fatal(errdir)
+    	}
+	}
+
+	for _, f := range files {
+	    if strings.Contains(f.Name(),".html"){
+	    	fmt.Println(f.Name())
+    		//if you want to use html from your local filesystem use file:/// + absolute path to your html file
+	   		url :=  "file:///" + abs + "/" + f.Name()	
+		   	// capture screenshot of an element
+		   	var buf []byte
+		  	// capture entire browser viewport, returning png with quality=90
+	   		if err := chromedp.Run(ctx, fullScreenshot(url, 90, &buf)); err != nil {
+		    log.Fatal(err)
+		   	}
+		   	screenshotName := "ScreenShots/" + strings.Replace(f.Name(),".html", ".png", 1)	
+	   		if err := ioutil.WriteFile(screenshotName, buf, 0644); err != nil {
+	   		    log.Fatal(err)
+    		}
+    	}
+	}
 }
 
 // fullScreenshot takes a screenshot of the entire browser viewport.
@@ -69,7 +99,7 @@ func fullScreenshot(urlstr string, quality int64, res *[]byte) chromedp.Tasks {
             if err != nil {
                 return err
             }
-            return nil
+            return err
         }),
     }
 }
