@@ -1,0 +1,23 @@
+---------------------No-Concurrency(55 files)-----------------------
+goos: linux
+goarch: amd64
+BenchmarkProgram-4   	       1	23247638795 ns/op
+PASS
+ok  	_/home/<user>/ScreenshotHTML	23.254s
+
+--------------------W/Concurrency(55 files)---------------------
+goos: linux
+goarch: amd64
+BenchmarkProgram-4   	       1	10675904051 ns/op
+PASS
+ok  	_/home/<user>/ScreenshotHTML	10.703s
+
+--------------------W/Concurrency(30 on a custom path and 55 files in default path)---------------------
+goos: linux
+goarch: amd64
+BenchmarkProgramCustom-4   	       1	3603572032 ns/op
+BenchmarkProgramNull-4     	       1	9294346411 ns/op
+PASS
+ok  	_/home/paul/ScreenshotHTML	12.929s
+
+
