@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Line Chart</title>
+<link rel="stylesheet" href="../resources/libs/uPlot.min.css">
+</head>
+<body>
+<script src= "../resources/libs/uPlot.iife.js"></script>
+<script>
+function createDiv(){
+  var div = document.createElement("DIV");
+  var text = document.createTextNode({{.Name}});
+  div.setAttribute("id", {{.Name}}); 
+  div.appendChild(text);
+  document.body.appendChild(div);
+}
+</script>
+<script>
+let XS = {{.DataOX}};
+let data = [
+  XS,
+  {{.DataOY}}
+];
+
+const opts = {
+    title:"line",
+    id:"ChartLine",
+    class: "{{.Name}}",
+    width: 800,
+    height: 600,
+    
+    scales: {
+        x:{
+            time: false,
+            type: "line",
+        },
+    },
+
+    series: [
+        {},
+        {
+          label: "line",
+          stroke: "red",
+          fill: "rgba(255,0,0,0.3)",
+        },
+    ],
+};
+createDiv();
+let uplot = new uPlot(opts,data,document.getElementById({{.Name}}));
+</script>
+</body>
+</html>
