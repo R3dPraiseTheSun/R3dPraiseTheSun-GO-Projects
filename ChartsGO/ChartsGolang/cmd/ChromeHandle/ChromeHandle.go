@@ -26,7 +26,7 @@ func ScreenShotSave(filePath string, fileName string, wg *sync.WaitGroup) {
 	if err := chromedp.Run(ctx, fullScreenshot("file:///"+getAbsolutePath(filePath), 90, &buf)); err != nil {
 		log.Fatal(err)
 	}
-	screenshotName := "./" + strings.Replace(fileName, ".html", ".png", 1)
+	screenshotName := "../Examples/Screenshot/" + strings.Replace(fileName, ".html", ".png", 1)
 	if err := ioutil.WriteFile(screenshotName, buf, 0644); err != nil {
 		log.Fatal(err)
 	}

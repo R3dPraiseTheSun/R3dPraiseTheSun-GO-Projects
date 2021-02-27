@@ -12,10 +12,10 @@ var tpl *template.Template
 func main() {
 	ConfigChart := charts.Cfg{
 		ChartType:         1,
-		ChartLegend:       "line2",
+		ChartLegend:       "LineExample1",
 		TemplatePath:      "../resources/templates/line.gohtml",
-		JSLibrary:         "../resources/libs/uPlot.iife.js",
-		ScreenCapturePath: "resouces2",
+		JSLibrary:         "../../resources/libs/",
+		ScreenCapturePath: "../Examples/HTMLFile/example1",
 	}
 	Series := charts.Series{
 		Name:   "LineChartExample",
@@ -28,7 +28,7 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	charts.NewChart(
-		charts.NewChartConfiguration(1, "line", "../resources/templates/line.gohtml", "..resources/libs/uplot.iife.js", "resources"),
+		charts.NewChartConfiguration(1, "LineExample2", "../resources/templates/line.gohtml", "../../resources/libs/", "../Examples/HTMLFile/example2"),
 		charts.NewChartDataset("Line", []interface{}{100, 200, 300, 400, 500, 600, 700, 800, 900, 1000}, []interface{}{325, 420, 200, 111, 450, 555, 666, 455, 980, 100}),
 	).Render(&wg)
 

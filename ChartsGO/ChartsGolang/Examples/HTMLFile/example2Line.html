@@ -3,30 +3,34 @@
 <head>
 <meta charset="utf-8">
 <title>Line Chart</title>
-<link rel="stylesheet" href="../resources/libs/uPlot.min.css">
+<link rel="stylesheet" href="../../resources/libs//uPlot.min.css">
+<style>
+h1 { text-align: center;}
+</style>
 </head>
 <body>
-<script src= "../resources/libs/uPlot.iife.js"></script>
+<script src= "../../resources/libs//uPlot.iife.js"></script>
 <script>
 function createDiv(){
   var div = document.createElement("DIV");
-  var text = document.createTextNode("LineChartExample");
-  div.setAttribute("id", "LineChartExample"); 
-  div.appendChild(text);
+  var text = document.createTextNode("Line");
+  var h1 = document.createElement("H1");
+  h1.appendChild(text);
+  div.setAttribute("id", "Line"); 
+  document.body.appendChild(h1);
   document.body.appendChild(div);
 }
 </script>
 <script>
-let XS = [100,200,210,400,500];
 let data = [
-  XS,
-  [325,420,102,300,444]
+  [100,200,300,400,500,600,700,800,900,1000],
+  [325,420,200,111,450,555,666,455,980,100]
 ];
 
 const opts = {
     title:"line",
     id:"ChartLine",
-    class: "LineChartExample",
+    class: "Line",
     width: 800,
     height: 600,
     
@@ -47,7 +51,7 @@ const opts = {
     ],
 };
 createDiv();
-let uplot = new uPlot(opts,data,document.getElementById("LineChartExample"));
+let uplot = new uPlot(opts,data,document.getElementById("Line"));
 </script>
 </body>
 </html>

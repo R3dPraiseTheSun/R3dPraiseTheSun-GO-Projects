@@ -3,29 +3,34 @@
 <head>
 <meta charset="utf-8">
 <title>Line Chart</title>
-<link rel="stylesheet" href="../resources/libs/uPlot.min.css">
+<link rel="stylesheet" href="{{.Cfg.JSLibrary}}/uPlot.min.css">
+<style>
+h1 { text-align: center;}
+</style>
 </head>
 <body>
-<script src= "../resources/libs/uPlot.iife.js"></script>
+<script src= "{{.Cfg.JSLibrary}}/uPlot.iife.js"></script>
 <script>
 function createDiv(){
   var div = document.createElement("DIV");
-  var text = document.createTextNode({{.Name}});
-  div.setAttribute("id", {{.Name}}); 
-  div.appendChild(text);
+  var text = document.createTextNode({{ (index .Dataset 0).Name}});
+  var h1 = document.createElement("H1");
+  h1.appendChild(text);
+  div.setAttribute("id", {{(index .Dataset 0).Name}}); 
+  document.body.appendChild(h1);
   document.body.appendChild(div);
 }
 </script>
 <script>
 let data = [
-  {{.DataOX}},
-  {{.DataOY}}
+  {{(index .Dataset 0).DataOX}},
+  {{(index .Dataset 0).DataOY}}
 ];
 
 const opts = {
     title:"line",
     id:"ChartLine",
-    class: "{{.Name}}",
+    class: "{{(index .Dataset 0).Name}}",
     width: 800,
     height: 600,
     
@@ -46,7 +51,7 @@ const opts = {
     ],
 };
 createDiv();
-let uplot = new uPlot(opts,data,document.getElementById({{.Name}}));
+let uplot = new uPlot(opts,data,document.getElementById({{(index .Dataset 0).Name}}));
 </script>
 </body>
 </html>

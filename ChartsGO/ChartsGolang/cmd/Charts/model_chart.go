@@ -37,13 +37,12 @@ func NewChartConfiguration(cType uint, cLegend string, templatePath string, JSLi
 }
 
 func NewChartDataset(name string, OX []interface{}, OY []interface{}) ChartDataset {
-	seriesData := Series{
-		Name:   name,
-		DataOX: OX,
-		DataOY: OY,
-	}
 	return ChartDataset{
-		seriesData,
+		Series{
+			Name:   name,
+			DataOX: OX,
+			DataOY: OY,
+		},
 	}
 }
 
@@ -58,11 +57,11 @@ func NewChart(cfg Cfg, data ChartDataset) *Chart {
 	if err != nil {
 		panic(err)
 	}
-	execerr := tpl.Execute(f, &data[0])
+	execerr := tpl.Execute(f, &Chart{Cfg: cfg, Dataset: data})
 	if execerr != nil {
 		panic(execerr)
 	}
-	//return chart to render
+	//return chart for render
 	return &Chart{
 		Cfg:     cfg,
 		Dataset: data,
