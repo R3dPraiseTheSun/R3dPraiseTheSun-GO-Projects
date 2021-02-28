@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Line Chart</title>
+<link rel="stylesheet" href="{{.Cfg.JSLibrary}}uPlot.min.css">
+<style>
+h1 { text-align: center;}
+</style>
+</head>
+<body>
+<script src= "{{.Cfg.JSLibrary}}uPlot.iife.js"></script>
+<script>
+function createDiv(name){
+  var div = document.createElement("DIV");
+  var text = document.createTextNode(name);
+  var h1 = document.createElement("H1");
+  h1.appendChild(text);
+  div.setAttribute("id", name); 
+  document.body.appendChild(h1);
+  document.body.appendChild(div);
+}
+</script>
+<script>
+const { linear, spline, stepped, bars } = uPlot.paths;
+
+let data = [
+  {{(index .Dataset 0).DataOX}},
+  {{(index .Dataset 0).DataOY}}
+];
+
+data[1].splice(22, 4, null, null, null, null);
+
+const lineInterpolations = {
+  linear:     0,
+  smooth:     1,
+  stepAfter:  2,
+  stepBefore: 3,
+};
+
+const drawStyles = {
+  line:      0,
+  bars:      1,
+  points:    2,
+  barsLeft:  3,
+  barsRight: 4,
+};
+
+// generate bar builder with 60% bar (40% gap) & 100px max bar width
+const _bars60_100   = bars({size: [0.6, 100]});
+const _bars100Left  = bars({size: [1], align:  1});
+const _bars100Right = bars({size: [1], align: -1});
+const _stepBefore   = stepped({align: -1});
+const _stepAfter    = stepped({align:  1});
+const _spline       = spline();
+const _linear       = linear();
+
+function paths(u, seriesIdx, idx0, idx1, extendGap, buildClip) {
+  let s = u.series[seriesIdx];
+  let style = s.drawStyle;
+  let interp = s.lineInterpolation;
+
+  let renderer = (
+    style == drawStyles.line ? (
+      interp == lineInterpolations.linear     ? _linear :
+      interp == lineInterpolations.smooth     ? _spline :
+      interp == lineInterpolations.stepAfter  ? _stepAfter :
+      interp == lineInterpolations.stepBefore ? _stepBefore :
+      null
+    ) :
+    style == drawStyles.bars ? (
+      _bars60_100
+    ) :
+    style == drawStyles.barsLeft ? (
+      _bars100Left
+    ) :
+    style == drawStyles.barsRight ? (
+      _bars100Right
+    ) :
+    style == drawStyles.points ? (
+      () => null
+    ) : () => null
+  );
+
+  return renderer(u, seriesIdx, idx0, idx1, extendGap, buildClip);
+}
+
+let cfgs = [
+  {
+    {{if eq .Cfg.ChartType 0}}
+      title: "{{(index .Dataset 0).Name}} Line",
+      drawStyle: drawStyles.line,
+      lineInterpolation: lineInterpolations.linear,
+    {{end}}
+    {{if eq .Cfg.ChartType 1}}
+      title: "{{(index .Dataset 0).Name}} Bars",
+      drawStyle: drawStyles.bars,
+      lineInterpolation: null,
+    {{end}}
+  },
+];
+
+function makeChart(cfg) {
+  let opts = {
+    width: 800,
+    height: 600,
+    title: cfg.title,
+
+    scales: {
+      x: {
+        time: false,
+      },
+    },
+    series: [
+      {
+        label: "X",
+      },
+      Object.assign({
+        label: "Y",
+        width: 1 / devicePixelRatio,
+        drawStyle: drawStyles.points,
+        lineInterpolation: null,
+        paths,
+      }, {
+        drawStyle:         cfg.drawStyle,
+        lineInterpolation: cfg.lineInterpolation,
+        stroke:            "red",
+        fill:              "rgba(255,0,0,0.3)",
+      }),
+    ],
+  };
+
+  createDiv(cfg.title);
+  return new uPlot(opts, data, document.body);
+}
+
+cfgs.forEach(cfg => makeChart(cfg));
+
+
+</script>
+</body>
+</html>
