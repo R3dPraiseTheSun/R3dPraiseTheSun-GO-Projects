@@ -1,8 +1,8 @@
 # ChartsGolang
 ## HOW TO USE
 **From main.go example:**
-How to assign data for a chart and render it:
-**- Create a Cfg and Dataset type separately not using functions, and then render the chart:**
+How to assign data for a chart and render it:__
+**- Create a Cfg and Dataset type separately not using functions, and then render the chart:**__
 ```
   ConfigChart := charts.Cfg{
 		ChartType:         0,
@@ -24,7 +24,7 @@ How to assign data for a chart and render it:
 	wg.Add(1)
 	Chart.Render(&wg)
   ```
-OR
+OR__
 **- Create Cfg using "NewChartConfiguration" and Dataset type using "NewChartDataset" in "NewChart" function, and then render the chart:**
 ```
 charts.NewChart(
