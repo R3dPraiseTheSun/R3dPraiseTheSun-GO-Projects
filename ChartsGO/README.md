@@ -1,6 +1,34 @@
 # ChartsGolang
+## Cfg and Dataset struct for charts
+```
+type Cfg struct {
+	ChartType         uint
+	ChartLegend       string
+	TemplatePath      string
+	JSLibrary         string
+	ScreenCapturePath string
+}
+
+type Series struct {
+	Name   string
+	DataOX []interface{}
+	DataOY []interface{}
+}
+type ChartDataset []Series
+```
+### Cfg
+**ChartType** can be 0 or 1 where 0 is **Line chart type** and 1 is **Bars chart type**.\
+**ChartLegend** A simple description.\
+**TemplatePath** This saves **the path to the template** used (in Example TemplatePath is "../resources/templates/template.gohtml".\
+**JSLibrary** This saves **the path to the JSLibrary** used (in Example we use [uPlots](https://github.com/leeoniya/uPlot)).\
+**ScreenCapturePath** This saves the path to where we want to save the HTML file and the screenshot.\
+
+### Dataset
+**Name** is saving the name of the chart. And this is going to be the title of the chart used in _Render()_ function.\
+**DataOX** and **DataOY** is the data of **OX** and respectively **OY** axes.\
+
 ## HOW TO USE
-**From main.go example:**\
+**From _main.go_ we use this example:**\
 How to assign data for a chart and render it:\
 **- Create a Cfg and Dataset type separately not using functions, and then render the chart:**
 ```
