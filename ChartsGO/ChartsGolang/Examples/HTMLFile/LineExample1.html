@@ -25,8 +25,8 @@ function createDiv(name){
 const { linear, spline, stepped, bars } = uPlot.paths;
 
 let data = [
-  [100,200,300,400,500,600,700],
-  [980,450,200,111,420,555,666,455,325,100]
+  [100,200,210,400,500],
+  [325,420,102,300,444]
 ];
 
 data[1].splice(22, 4, null, null, null, null);
@@ -88,10 +88,10 @@ function paths(u, seriesIdx, idx0, idx1, extendGap, buildClip) {
 let cfgs = [
   {
     
+      title: "LineExample1 Line",
+      drawStyle: drawStyles.line,
+      lineInterpolation: lineInterpolations.linear,
     
-      title: "Bars Example 2 Bars",
-      drawStyle: drawStyles.bars,
-      lineInterpolation: null,
     
   },
 ];

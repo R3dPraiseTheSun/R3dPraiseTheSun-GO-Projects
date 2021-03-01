@@ -7,7 +7,6 @@ import (
 	"log"
 	"math"
 	"path/filepath"
-	"strings"
 	"sync"
 
 	"github.com/chromedp/cdproto/emulation"
@@ -15,6 +14,7 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
+//ScreenShotSave is a function that is used to save a screenshot in headless chrome
 func ScreenShotSave(filePath string, fileName string, wg *sync.WaitGroup) {
 
 	ctx, cancel := chromedp.NewContext(context.Background())
@@ -26,7 +26,7 @@ func ScreenShotSave(filePath string, fileName string, wg *sync.WaitGroup) {
 	if err := chromedp.Run(ctx, fullScreenshot("file:///"+getAbsolutePath(filePath), 90, &buf)); err != nil {
 		log.Fatal(err)
 	}
-	screenshotName := "../Examples/Screenshot/" + strings.Replace(fileName, ".html", ".png", 1)
+	screenshotName := "../Examples/Screenshot/" + fileName + ".png"
 	if err := ioutil.WriteFile(screenshotName, buf, 0644); err != nil {
 		log.Fatal(err)
 	}

@@ -8,6 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+//GetTemplate is a fucntion that returns the template from a template path
 func GetTemplate(TemplatePath string) (*template.Template, error) {
 	errPath := errors.New("Template path invalid!")
 	tpl, err := template.ParseFiles(getAbsolutePath(TemplatePath))
